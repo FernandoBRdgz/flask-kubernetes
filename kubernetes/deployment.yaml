@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-python-deployment
+  labels:
+    app: hello-python 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-python
+  template:
+    metadata:
+      labels:
+        app: hello-python
+    spec:
+      containers:
+      - name: hello-python-pod
+        image: fernandobrdgz/hello-python:latest
+        ports:
+        - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-python-service
+  labels:
+    app: hello-python
+spec:
+  type: ClusterIP
+  selector:
+    app: hello-python
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
